@@ -1,6 +1,4 @@
 #!/bin/sh
-# POSIX sh RNG roller -- no bashisms. Persists rolls + pity to .rolls
-# next to this script, wherever it's run from.
 
 WHITE='\033[1;37m'
 GREEN='\033[1;32m'
@@ -16,9 +14,10 @@ BOX_WIDTH=34
 INNER_WIDTH=$((BOX_WIDTH - 4))
 PITY_LIMIT=50
 
-# Resolve the directory this script actually lives in, regardless of cwd
-SCRIPT_DIR=$(cd "$(dirname "$0")" && pwd)
-ROLLS_FILE="$SCRIPT_DIR/.rolls"
+DATA_DIR="$HOME/.local/share/soltui"
+mkdir -p "$DATA_DIR" 2>/dev/null
+ROLLS_FILE="$DATA_DIR/.rolls"
+
 
 total_rolls=0
 pity_counter=0
