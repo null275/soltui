@@ -1,4 +1,6 @@
 #!/bin/sh
+# POSIX sh RNG roller -- no bashisms. Persists rolls + pity to .rolls
+# next to this script, wherever it's run from.
 
 WHITE='\033[1;37m'
 GREEN='\033[1;32m'
@@ -14,6 +16,7 @@ BOX_WIDTH=34
 INNER_WIDTH=$((BOX_WIDTH - 4))
 PITY_LIMIT=50
 
+# Resolve the directory this script actually lives in, regardless of cwd
 SCRIPT_DIR=$(cd "$(dirname "$0")" && pwd)
 ROLLS_FILE="$SCRIPT_DIR/.rolls"
 
@@ -205,8 +208,8 @@ while true; do
     key=$(read_key)
 
     if [ "$key" = "q" ] || [ "$key" = "Q" ]; then
-        printf "\r\033[Kexiting\n"
-        printf "rolls:: %s  (common %s, uncommon %s, rare %s, legendary %s)\n" \
+        printf "\r\033[KExiting. Thanks for playing!\n"
+        printf "Total rolls: %s  (common %s, uncommon %s, rare %s, legendary %s)\n" \
             "$total_rolls" "$count_common" "$count_uncommon" "$count_rare" "$count_legendary"
         break
     fi
@@ -214,11 +217,11 @@ while true; do
     if [ "$key" = "o" ] || [ "$key" = "O" ]; then
         if [ "$cooldown_disabled" -eq 1 ]; then
             cooldown_disabled=0
-            printf "\r\033[K%bcooldown enabled.%b\n" "$GRAY" "$RESET"
+            printf "\r\033[K%bCooldown re-enabled.%b\n" "$GRAY" "$RESET"
         else
             cooldown_disabled=1
             cooldown_remaining=0
-            printf "\r\033[K%byno cooldown%b\n" "$GRAY" "$RESET"
+            printf "\r\033[K%bCooldown disabled -- roll freely.%b\n" "$GRAY" "$RESET"
         fi
         continue
     fi
