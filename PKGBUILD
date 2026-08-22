@@ -7,7 +7,7 @@ arch=('any')
 url="https://github.com/null275/soltui"
 license=('GPL-3.0-or-later')
 depends=('sh')
-source=("https://github.com/null275/soltui/releases/download/release2/soltui.0.2.tar.gz")
+source=("https://github.com/null275/soltui/releases/download/release3/soltui.0.3.tar.gz")
 sha256sums=('SKIP')
 
 package() {
