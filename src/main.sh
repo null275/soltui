@@ -168,9 +168,9 @@ roll_animation() {
         count_legendary=$((count_legendary + 1))
         draw_box 0 "$YELLOW" "* ${S_LEGENDARY} *"
         if [ "$forced" -eq 1 ]; then
-            printf "\033[K%b\n" "${YELLOW}LEGENDARY -- pity kicked in!${RESET}"
+            printf "\033[K%b\n" "${YELLOW}LEGENDARY (pity)${RESET}"
         else
-            printf "\033[K%b\n" "${YELLOW}LEGENDARY -- 1% chance${RESET}"
+            printf "\033[K%b\n" "${YELLOW}LEGENDARY (you lucky boy)${RESET}"
         fi
     elif [ "$roll" -lt 10 ]; then
         count_rare=$((count_rare + 1))
@@ -191,24 +191,24 @@ roll_animation() {
     save_state
 }
 
-printf "=== RNG ROLLER ===\n"
-printf "Press [M] to roll, [O] to toggle cooldown, [Q] to quit.\n"
-printf "Saving progress to: %s\n\n" "$ROLLS_FILE"
+printf "=== soltui ===\n"
+printf "M = roll, O = disable / enable cooldown, Q = exit\n"
+printf "saving rolls to: %s\n\n" "$ROLLS_FILE"
 
 while true; do
     if [ "$cooldown_disabled" -eq 1 ]; then
-        printf "\r\033[K%bReady! [M] roll, [O] cooldown OFF, [Q] quit. (pity %s/%s)%b" "$GRAY" "$pity_counter" "$PITY_LIMIT" "$RESET"
+        printf "\r\033[K%bready, M = roll, O = cooldown enable / disable, Q = exit (pity %s/%s)%b" "$GRAY" "$pity_counter" "$PITY_LIMIT" "$RESET"
     elif [ "$cooldown_remaining" -gt 0 ]; then
-        printf "\r\033[K%bOn cooldown... %ds%b" "$GRAY" "$cooldown_remaining" "$RESET"
+        printf "\r\033[K%bcooldown... %ds%b" "$GRAY" "$cooldown_remaining" "$RESET"
     else
-        printf "\r\033[KReady! [M] roll, [O] disable cooldown, [Q] quit. (pity %s/%s)" "$pity_counter" "$PITY_LIMIT"
+        printf "\r\033[KReady, M = roll, O = disable cooldown, Q = quit. (pity %s/%s)" "$pity_counter" "$PITY_LIMIT"
     fi
 
     key=$(read_key)
 
     if [ "$key" = "q" ] || [ "$key" = "Q" ]; then
-        printf "\r\033[KExiting. Thanks for playing!\n"
-        printf "Total rolls: %s  (common %s, uncommon %s, rare %s, legendary %s)\n" \
+        printf "\r\033[Kplay again soon\n"
+        printf "total rolls: %s  (common %s, uncommon %s, rare %s, legendary %s)\n" \
             "$total_rolls" "$count_common" "$count_uncommon" "$count_rare" "$count_legendary"
         break
     fi
@@ -216,11 +216,11 @@ while true; do
     if [ "$key" = "o" ] || [ "$key" = "O" ]; then
         if [ "$cooldown_disabled" -eq 1 ]; then
             cooldown_disabled=0
-            printf "\r\033[K%bCooldown re-enabled.%b\n" "$GRAY" "$RESET"
+            printf "\r\033[K%bcooldown is back%b\n" "$GRAY" "$RESET"
         else
             cooldown_disabled=1
             cooldown_remaining=0
-            printf "\r\033[K%bCooldown disabled -- roll freely.%b\n" "$GRAY" "$RESET"
+            printf "\r\033[K%broll all you want (no cooldown)%b\n" "$GRAY" "$RESET"
         fi
         continue
     fi
